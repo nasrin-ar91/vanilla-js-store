@@ -5,6 +5,7 @@ import { El } from "../../utils/el";
 import { router } from "../../utils/router";
 import { createSearchCard } from "./createSearchCard";
 import { createLine } from "../../base/createLine";
+import { Footer } from "../shared/footer/footer";
 
 export function Search() {
 
@@ -234,15 +235,20 @@ export function Search() {
   })
   menu.append(HeaderMenu, createLine(), history)
 
+  const mainContainer = El({
+    element: "div",
+    className: "flex-1 flex flex-col gap-5 overflow-hidden w-full"
+  })
+  mainContainer.append(searchBox, resulContainer, menu)
+
+  renderHistory();
+  handleSearch(fisrtSearchValue, true);
+
   const searchContainer = El(({
     element: "div",
     className: "h-screen w-full flex flex-col gap-5 p-10 overflow-hidden"
   }))
 
-  searchContainer.append(searchBox, resulContainer, menu)
-
-  renderHistory();
-  handleSearch(fisrtSearchValue, true);
-
+  searchContainer.append(mainContainer, Footer())
   return searchContainer
 }
