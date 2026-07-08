@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "inter";
+  src: url(./assets/fonts/Inter/Inter-VariableFont_opsz\,wght.ttf);
+}
+
+html,
+body {
+  font-family: "inter";
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* hide scrollbar for chrome safari opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* hide scrollbar for fireFox ios , .. */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
