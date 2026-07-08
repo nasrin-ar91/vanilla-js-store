@@ -89,12 +89,12 @@ export function Profile() {
     return El({
       element: "div",
       className: "flex items-center justify-between cursor-pointer p-2",
-      eventListener: [
-        {
-          event: "click",
-          callback: () => router.navigate(path)
-        }
-      ],
+      // eventListener: [
+      //   {
+      //     event: "click",
+      //     callback: () => router.navigate(path)
+      //   }
+      // ],
       children: [
         El({
           element: "div",
