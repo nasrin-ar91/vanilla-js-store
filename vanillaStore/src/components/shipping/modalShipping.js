@@ -1,11 +1,10 @@
-import { deleteCart } from "../../api/cartApi/cartApi";
 import { createLine } from "../../base/createLine";
-import { createOrder } from "../../base/createOrder";
+import { showToast } from "../../base/showToast";
 import { El } from "../../utils/el";
 import { store } from "../../utils/store";
 
 
-export function modalCart(inputFunc) {
+export function modalShipping() {
   const backdrop = El({
     element: "div",
     className: "flex hidden bg-gray-600/90  fixed inset-0 items-end justify-center z-40",
@@ -14,22 +13,51 @@ export function modalCart(inputFunc) {
         event: "click",
         callback: (e) => {
           if (e.target === backdrop) {
-            store.setState("isModal", false);
+            store.setState("addressModal", false);
           }
         }
       }
     ]
   })
 
-  async function handleDelete() {
-    const productOrderedId = store.getState("selectedOrder");
-    const removeProduct = await deleteCart(Number(productOrderedId.id))
-    store.setState("isModal", false)
+  function handleAdd() {
+    const nameValue = inputBox.querySelector("#addressName").value.trim()
+    const addressValue = inputBox.querySelector("#address").value.trim()
+    if (!nameValue && !addressValue) showToast("Inputs can not be empty!", "red")
+    else {
+      const savedAddresses = JSON.parse(localStorage.getItem("addresses")) || [];
+      savedAddresses.push({ nameValue, addressValue });
+      localStorage.setItem("addresses", JSON.stringify(savedAddresses));
+
+      store.setState("address", { nameValue, addressValue });
+      showToast("Address added successfully!", "green");
+      store.setState("addressModal", false);
+    }
   }
 
-  const orderBox = El({
+  const inputBox = El({
     element: "div",
-    className: "flex flex-col w-full"
+    className: "flex flex-col gap-3 w-full",
+    children: [
+      El({
+        element: "input",
+        classList: "rounded-xl bg-black/5 text-black p-4 w-full",
+        restAttrs: {
+          placeholder: "Please Enter Address Name",
+          name: "addressName",
+          id: "addressName"
+        }
+      }),
+      El({
+        element: "input",
+        classList: "rounded-xl bg-black/5 text-black p-4 w-full",
+        restAttrs: {
+          placeholder: "Please Enter Address ",
+          name: "address",
+          id: "address"
+        }
+      })
+    ]
   })
 
   const modalContent = El({
@@ -39,10 +67,10 @@ export function modalCart(inputFunc) {
       El({
         element: "div",
         className: "text-lg text-black font-bold",
-        innerText: "Remove From Cart?"
+        innerText: "Add New Address"
       }),
       createLine(),
-      orderBox,
+      inputBox,
       createLine(),
       El({
         element: "div",
@@ -56,19 +84,19 @@ export function modalCart(inputFunc) {
               {
                 event: "click",
                 callback: () => {
-                  store.setState("isModal", false)
+                  store.setState("addressModal", false)
                 }
               }
             ]
           }),
           El({
             element: "button",
-            innerText: "Yes, Remove",
+            innerText: "Add",
             className: "bg-black rounded-full py-4 w-1/2 text-white text-sm font-bold hover:cursor-pointer hover:-translate-y-1",
             eventListener: [
               {
                 event: "click",
-                callback: handleDelete
+                callback: handleAdd
               }
             ]
           })
@@ -78,21 +106,9 @@ export function modalCart(inputFunc) {
 
   })
 
-  store.subscribe("selectedOrder", (value) => {
-    const newItem = value ?? {};
-    if (newItem) {
-      orderBox.innerHTML = "";
-      orderBox.append(createOrder(newItem));
-      const btns = orderBox.querySelectorAll(".btn");
-      const deleteBtn = orderBox.querySelector(".delete-option");
-      btns.disabled = true;
-      deleteBtn.classList.add("hidden");
-    }
-  })
-
   backdrop.append(modalContent);
 
-  store.subscribe("isModal", (modalValue) => {
+  store.subscribe("addressModal", (modalValue) => {
     const modalFlag = modalValue ?? false;
     if (modalFlag) {
       backdrop.classList.remove("hidden");
@@ -100,7 +116,6 @@ export function modalCart(inputFunc) {
     } else {
       backdrop.classList.remove("flex")
       backdrop.classList.add("hidden");
-      inputFunc();
     }
   })
 

@@ -73,7 +73,7 @@ export function Cart() {
           }),
           El({
             element: "button",
-            className: "checkout-btn disabled relative bg-black rounded-full text-white text-lg font-bold p-4 flex-1",
+            className: "checkout-btn disabled relative bg-black rounded-full text-white text-lg font-bold p-4 flex-1 disabled:opacity-50 disabled:cursor-not-allowed",
             innerText: "Checkout",
             eventListener: [
               {
@@ -106,14 +106,15 @@ export function Cart() {
     orderBox.innerHTML = `<div class="col-span-2 flex flex-col items-center justify-center"><div class="inline-block animate-spin rounded-full h-12 w-12 border-b-3 border-black"></div >
       <p class="mt-4 text-gray-800 font-bold">Loading ... </p></div>`
     const priceBox = footerBox.querySelector(".final-price")
+    const checkBtn = footerBox.querySelector(".checkout-btn");
     const orderData = await getCartProducts();
     orderBox.innerHTML = "";
     const priceArray = [];
-    const checkBtn = footerBox.querySelector(".checkout-btn");
 
     if (orderData.length > 0) {
       checkBtn.disabled = false;
-      orderData.map(item => {
+      checkBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      orderData.forEach(item => {
         orderBox.append(createOrder(item, getOrderList))
         priceArray.push(item.quantity * item.sneaker.price);
       })
@@ -121,9 +122,11 @@ export function Cart() {
       priceBox.innerText = `$ ${totalPrice}`;
     }
     else {
-      orderBox.className = "flex-1 flex flex-col gap-5 p-5 pl-10 w-full text-xl font-medium"
+      orderBox.className = "flex-1 flex flex-col gap-5 p-5 w-full overflow-y-auto scrollbar-hide";
       orderBox.innerText = "Your cart is empty. Start shopping now!";
+      priceBox.innerText = "$ 0";
       checkBtn.disabled = true;
+      // priceBox.innerHTML = "";
     }
   }
   getOrderList()
