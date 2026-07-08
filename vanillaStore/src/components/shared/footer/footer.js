@@ -4,8 +4,10 @@ import { CartIcon, HomeIcon, OrderIcon, ProfileIcon, WalletIcon } from "../../ic
 
 export function Footer() {
 
-  function createMenuItem(title, Icon, path) {
+  function createMenuItem(title, Icon, path, isDisabled = false) {
     const isActive = router.getCurrentRoute() === path;
+
+    const cursorClass = isDisabled ? "cursor-not-allowed opacity-40" : "cursor-pointer";
 
     return El({
       element: "div",
@@ -14,7 +16,7 @@ export function Footer() {
         El({
           element: "div",
           className: "w-7",
-          innerHTML: Icon(isActive),
+          innerHTML: Icon(isActive && !isDisabled),
         }),
         El({
           element: "div",
@@ -22,7 +24,7 @@ export function Footer() {
           innerText: title,
         }),
       ],
-      eventListener: [
+      eventListener: isDisabled ? [] : [
         {
           event: "click",
           callback: () => {
@@ -35,9 +37,9 @@ export function Footer() {
 
   const home = createMenuItem("Home", HomeIcon, "/");
   const cart = createMenuItem("Cart", CartIcon, "/cart");
-  const wallet = createMenuItem("Wallet", WalletIcon, "/wallet");
+  const wallet = createMenuItem("Wallet", WalletIcon, "/wallet", true);
   const profile = createMenuItem("Profile", ProfileIcon, "/profile");
-  const order = createMenuItem("Order", OrderIcon, "/checkout");
+  const order = createMenuItem("Order", OrderIcon, "/order", true);
 
   const footerContainer = El({
     element: "div",

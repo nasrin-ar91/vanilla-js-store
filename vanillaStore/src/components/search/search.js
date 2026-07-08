@@ -237,7 +237,7 @@ export function Search() {
 
   const mainContainer = El({
     element: "div",
-    className: "flex-1 flex flex-col gap-5 overflow-hidden w-full"
+    className: "flex-1 flex flex-col gap-5 p-5 overflow-hidden w-full"
   })
   mainContainer.append(searchBox, resulContainer, menu)
 
@@ -246,7 +246,7 @@ export function Search() {
 
   const searchContainer = El(({
     element: "div",
-    className: "h-screen w-full flex flex-col gap-5 p-10 overflow-hidden"
+    className: "h-screen w-full flex flex-col gap-5 p-5 overflow-hidden"
   }))
 
   searchContainer.append(mainContainer, Footer())

@@ -37,11 +37,11 @@ export function Profile() {
 
   const imgBox = El({
     element: "div",
-    className: "flex flex-col justify-center items-center gap-5 mt-2 relative",
+    className: "flex flex-col justify-center items-center gap-5 p-5 relative",
     children: [
       El({
         element: "img",
-        className: "w-40 h-40 rounded-full ring-2 ring-gray-300",
+        className: "w-40 h-40 rounded-full ring-4 ring-offset-6 ring-gray-500",
         src: "/images/profileImg.png"
       }),
       El({
@@ -62,7 +62,7 @@ export function Profile() {
       }),
       El({
         element: "div",
-        className: "flex gap-2 items-center absolute right-0 top-0 cursor-pointer",
+        className: "flex gap-2 items-center absolute right-5 top-5 cursor-pointer",
         eventListener: [
           {
             event: "click",
@@ -123,7 +123,7 @@ export function Profile() {
 
   const detailBox = El({
     element: "div",
-    className: "flex flex-col gap-5",
+    className: "flex flex-col gap-5 p-5",
   })
 
   const footerBox = El({
@@ -136,7 +136,7 @@ export function Profile() {
 
   const profileContainer = El({
     element: "div",
-    className: "flex flex-col justify-center gap-20 p-5",
+    className: "flex flex-col justify-center gap-10 pt-5",
   })
 
   profileContainer.append(imgBox, detailBox, footerBox)
