@@ -67,6 +67,7 @@ export async function getProducts() {
     return products
   }
   catch (error) {
+    router.navigate("/login")
     throw error;
   }
 }
