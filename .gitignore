@@ -1,0 +1,4 @@
+node_modules/
+backEndStore/node_modules/
+vanillaStore/node_modules/
+.env
